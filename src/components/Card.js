@@ -7,7 +7,7 @@ const Post = styled.li`
   position: relative;
   border: 1px solid ${props => props.theme.colors.secondary};
   border-radius: 2px;
-  margin: 0 0 1em 0;
+  margin: 0 0 1rem 0;
   width: 100%;
   transition: background 0.2s;
   @media screen and (min-width: ${props => props.theme.responsive.small}) {
@@ -35,6 +35,11 @@ const Post = styled.li`
       }
     }
   }
+`
+
+const Cover = styled(Img)`
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 `
 
 const Title = styled.h2`
@@ -73,7 +78,7 @@ const Card = ({
   return (
     <Post featured={props.featured}>
       <Link to={`/${slug}/`}>
-        <Img fluid={heroImage.fluid} backgroundColor={'#eeeeee'} />
+        <Cover fluid={heroImage.fluid} backgroundColor={'#eeeeee'} />
         <Title>{title}</Title>
         <Date>{publishDate}</Date>
         <ReadingTime>{timeToRead} min read</ReadingTime>
