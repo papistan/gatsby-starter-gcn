@@ -40,7 +40,7 @@ export const query = graphql`
       body {
         childMarkdownRemark {
           html
-          excerpt(pruneLength: 320)
+          excerpt
         }
       }
     }

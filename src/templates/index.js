@@ -10,10 +10,16 @@ import SEO from '../components/SEO'
 import config from '../utils/siteConfig'
 
 const Index = ({ data, pageContext }) => {
-  const posts = data.allContentfulPost.edges
-  const featuredPost = posts[0].node
+  let posts
+  try {
+    posts = data.allContentfulPost.edges
+  } catch (error) {
+    posts = null
+  }
   const { currentPage } = pageContext
   const isFirstPage = currentPage === 1
+
+  console.log(posts.length)
 
   return (
     <Layout>
@@ -24,14 +30,8 @@ const Index = ({ data, pageContext }) => {
         </Helmet>
       )}
       <Container>
-        {isFirstPage ? (
-          <CardList>
-            <Card {...featuredPost} featured />
-            {posts.slice(1).map(({ node: post }) => (
-              <Card key={post.id} {...post} />
-            ))}
-          </CardList>
-        ) : (
+        {posts.length === 0 && <p>No posts found.</p>}
+        {posts.length >= 1 && (
           <CardList>
             {posts.map(({ node: post }) => (
               <Card key={post.id} {...post} />
@@ -67,7 +67,7 @@ export const query = graphql`
             childMarkdownRemark {
               timeToRead
               html
-              excerpt(pruneLength: 80)
+              excerpt
             }
           }
         }

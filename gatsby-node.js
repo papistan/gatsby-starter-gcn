@@ -1,6 +1,57 @@
 const config = require('./src/utils/siteConfig')
 const path = require(`path`)
 
+// Schema Customization
+exports.sourceNodes = ({ actions, schema }) => {
+  const { createTypes } = actions
+  createTypes(`
+    type Body @infer {
+      childMarkdownRemark: ChildMarkdownRemark
+    }
+    type ChildMarkdownRemark @infer {
+      html: String
+      excerpt: String
+      timeToRead: String
+    }
+    type MetaDescription @infer {
+      internal: Internal
+    }
+    type Internal @infer {
+      content: String
+    }
+    type Tags @infer {
+      title: String
+      id: String
+      slug: String
+    }
+
+    type ContentfulPost implements Node @infer {
+      title: String
+      slug: String
+      heroImage: ContentfulAsset
+      metaDescription: MetaDescription
+      publishDate: Date @dateformat
+      tags: Tags
+      body: Body
+    }
+
+    type ContentfulPage implements Node @infer {
+      title: String
+      slug: String
+      metaDescription: MetaDescription
+      body: Body
+    }
+
+    type ContentfulTag implements Node @infer {
+      title: String
+      slug: String
+      post: ContentfulPost
+    }
+
+
+  `)
+}
+
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 
